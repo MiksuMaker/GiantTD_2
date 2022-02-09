@@ -170,8 +170,8 @@ MonoBehaviour:
   mountain: {fileID: 4358687017288487518, guid: 6f33545f8eca4cf4d88f8a6abf2d0c01, type: 3}
   tree: {fileID: 8445871848582962524, guid: 94d44d01cb87344439fe2638c0ef8643, type: 3}
   tileParent: {fileID: 291182303}
-  rows: 11
-  columns: 11
+  rows: 0
+  columns: 0
   tiles: []
   mountainMaxSize: 5
   mountainAmount: 5

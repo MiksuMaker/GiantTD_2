@@ -22,15 +22,17 @@ public class EnemyPathfinder : MonoBehaviour
     //STATS
     [Header("Stats")]
     [SerializeField] float agentSpeed = 1f;
-    
+
 
 
     void Start()
     {
-        // Set up references:
+        //Set up references:
         manager = FindObjectOfType<Test_Path_Manager>();
         agent = GetComponent<NavMeshAgent>();
         attacker = GetComponent<EnemyAttacker>();
+
+        StartCoroutine(LateSetUp());
 
         //Debug.Log("ENEMY Starting up!");
         RandomizeNextTarget();
@@ -39,6 +41,22 @@ public class EnemyPathfinder : MonoBehaviour
         agent.speed = agentSpeed;
 
         StartCoroutine(UpdatePathfinding());
+    }
+
+    IEnumerator LateSetUp()
+    {
+        //makes sure all the components have time to be set up before referencing
+
+        bool doneWithSetUp = false;
+        while (!doneWithSetUp)
+        {
+            yield return new WaitForEndOfFrame();
+            attacker = GetComponent<EnemyAttacker>();
+            if (attacker)
+            {
+                doneWithSetUp = true;
+            }
+        }
     }
 
     private void Move()
@@ -88,7 +106,7 @@ public class EnemyPathfinder : MonoBehaviour
             // ... -> Nothing required here?
 
             // Waiting period for the next cycle
-            yield return new WaitForSeconds(updateTime); 
+            yield return new WaitForSeconds(updateTime);
 
         }
     }
@@ -124,7 +142,7 @@ public class EnemyPathfinder : MonoBehaviour
     {
         Vector3 obj = currentTargetObject.transform.position;
         Vector3 _p = new Vector3(obj.x, 0, obj.z);
-       
+
         return _p;
     }
 
@@ -137,7 +155,7 @@ public class EnemyPathfinder : MonoBehaviour
     }
 
     #endregion
-    
+
     // Attacking
 
     public void AggroTheEnemy(GameObject _target)

@@ -10,7 +10,8 @@ public class LevelGenerator : MonoBehaviour
     public GameObject tileParent;
 
 
-
+    //Tree stuff
+    public int amountOfTrees = 30;
 
     //Map length and width
     public int rows = 20;
@@ -34,6 +35,7 @@ public class LevelGenerator : MonoBehaviour
         TileSpawner();
         //MountainBuilder(MountainAssembler(mountainMaxSize));
         MountainSpawner(Mountains(mountainAmount));
+        TreeSpawner();
     }
 
     // Update is called once per frame
@@ -78,23 +80,33 @@ public class LevelGenerator : MonoBehaviour
         GameObject mountainsInspector = new GameObject("Mountains");
         for (int i = 0; i < mountainsToSpawn.Count; i++)
         {
-            Vector3 randomLoc = new Vector3(Random.Range(0, 30), 0, (Random.Range(0, 30)));
+            Vector3 randomLoc = new Vector3(Random.Range(3, rows-3), 0, (Random.Range(3, columns-3))); //Spawn mountains within the tiles
             GameObject mtn = Instantiate(mountainsToSpawn[i], randomLoc, Quaternion.identity);
-            Debug.Log("Spawning mountain number: " + i);
+            //Debug.Log("Spawning mountain number: " + i);
             mtn.transform.parent = mountainsInspector.transform;
         }
     }
 
     void TreeSpawner()
     {
-
+        GameObject treeHolder = new GameObject("Trees");
+        for (int i = 0; i < amountOfTrees; i++)
+        {
+            Vector3 randomLoc = new Vector3(Random.Range(3, rows - 3), 0, (Random.Range(3, columns - 3))); //Spawn mountains within the tiles
+            if (Physics.OverlapSphere(randomLoc, 0.1f).Length > 0)
+            {
+                Debug.Log(Physics.OverlapSphere(randomLoc, 1f).Length);
+            }
+            GameObject treeObj = Instantiate(tree, randomLoc, Quaternion.identity);
+            treeObj.transform.parent = treeHolder.transform;
+        }
     }
 
     GameObject MountainBuilder(List<Vector3> coords) //Build mountains that are placed on the level
     {
-        GameObject mtnHolder = new GameObject("MountainJeah");
+        GameObject mtnHolder = new GameObject("Mountainholder"); //Place the "parts" under this object
 
-        for (int i = 0; i < coords.Count; i++)
+        for (int i = 0; i < coords.Count; i++) //Take in coordinates in which to build a mountain
         {
 
             GameObject mtnPart = Instantiate(mountain, coords[i], Quaternion.identity);
@@ -143,7 +155,7 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    List<GameObject> Mountains(int mountainAmount)
+    List<GameObject> Mountains(int mountainAmount) //Make a list of mountains to build
     {
         List<GameObject> mountains = new List<GameObject>();
         
@@ -155,4 +167,6 @@ public class LevelGenerator : MonoBehaviour
 
         return mountains;
     }
+
+
 }

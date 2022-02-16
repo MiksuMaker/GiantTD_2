@@ -174,7 +174,7 @@ MonoBehaviour:
   columns: 50
   tiles: []
   mountainMaxSize: 7
-  mountainAmount: 5
+  mountainAmount: 15
 --- !u!1 &222587406
 GameObject:
   m_ObjectHideFlags: 0

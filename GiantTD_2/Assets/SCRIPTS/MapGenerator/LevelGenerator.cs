@@ -32,8 +32,8 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         TileSpawner();
-        //MountainSpawner();
-        MountainBuilder(LocationBuilder(5));
+        //MountainBuilder(MountainAssembler(mountainMaxSize));
+        MountainSpawner(Mountains(mountainAmount));
     }
 
     // Update is called once per frame
@@ -73,27 +73,15 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void MountainSpawner()
+    void MountainSpawner(List <GameObject> mountainsToSpawn)
     {
-        Vector3 spawnLoc = new Vector3(0, 0, 0);
-        Vector3 prevLoc = spawnLoc;
-        int mountainSize = Random.Range(5, 5);
-
-        for (int i = 0; i < mountainSize; i++)
+        GameObject mountainsInspector = new GameObject("Mountains");
+        for (int i = 0; i < mountainsToSpawn.Count; i++)
         {
-            GameObject mt = Instantiate(mountain, spawnLoc, Quaternion.identity);
-            mt.transform.localScale = new Vector3(1, Random.Range(0.5f, 1.5f), 1);
-            int rnd = Random.Range(1, 3);
-            Debug.Log(rnd);
-            if (rnd == 1)
-            {
-                spawnLoc.x += Random.Range(0, 2) * 2 - 1;
-            }
-            else
-            {
-                spawnLoc.z += Random.Range(0, 2) * 2 - 1;
-            }
-
+            Vector3 randomLoc = new Vector3(Random.Range(0, 30), 0, (Random.Range(0, 30)));
+            GameObject mtn = Instantiate(mountainsToSpawn[i], randomLoc, Quaternion.identity);
+            Debug.Log("Spawning mountain number: " + i);
+            mtn.transform.parent = mountainsInspector.transform;
         }
     }
 
@@ -102,31 +90,27 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
-    void MountainGenerator()
+    GameObject MountainBuilder(List<Vector3> coords) //Build mountains that are placed on the level
     {
-
-    }
-
-    void MountainBuilder(List<Vector3> coords) //Build mountains that are placed on the level
-    {
-        GameObject mtnHolder = new GameObject("Mountain");
+        GameObject mtnHolder = new GameObject("MountainJeah");
 
         for (int i = 0; i < coords.Count; i++)
         {
 
             GameObject mtnPart = Instantiate(mountain, coords[i], Quaternion.identity);
             mtnPart.transform.parent = mtnHolder.transform;
-
-
+            Destroy(mtnHolder);
         }
+
+        return mtnHolder;
     }
 
-    List<Vector3> LocationBuilder(int size)
+    List<Vector3> MountainAssembler(int size) //Creates a list of coordinates for the mountain parts
     {
         List<Vector3> coordinates = new List<Vector3>(); //Create a list to contain random vector3 locations
 
         Vector3 currentLoc = new Vector3(0, 0, 0); //First one is at 0,0,0
-        Vector3 previousLoc = new Vector3(0, 0, 0); //Keep previous mtn location just in case
+        Vector3 previousLoc = new Vector3(0, 0, 0); //Keep previous mountainpart location just in case
         coordinates.Add(currentLoc); //Add it to the list as the first one
 
         for (int i = 1; i < size; i++)
@@ -141,7 +125,7 @@ public class LevelGenerator : MonoBehaviour
                 currentLoc.z += Random.Range(0, 2) * 2 - 1;
             }
 
-            if (coordinates.Contains(currentLoc)) //Check if list already has the coordinates, if it does, remove current one and roll again
+            if (coordinates.Contains(currentLoc)) //Check if list already has the coordinates, if it does, don't add and roll again
             {
                 currentLoc = previousLoc; //If the position was already in the list, set current location to the previous so we can roll again
                 i--; //Remove one iteration so we can roll again
@@ -155,7 +139,20 @@ public class LevelGenerator : MonoBehaviour
 
         }
 
-        return coordinates; //testinggg
+        return coordinates; 
 
+    }
+
+    List<GameObject> Mountains(int mountainAmount)
+    {
+        List<GameObject> mountains = new List<GameObject>();
+        
+
+        for (int i = 1; i < mountainAmount; i++)
+        {
+            mountains.Add(MountainBuilder(MountainAssembler(mountainMaxSize)));
+        }
+
+        return mountains;
     }
 }

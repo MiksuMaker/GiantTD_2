@@ -25,30 +25,17 @@ public class EnemyPathfinder : MonoBehaviour
     {
         manager = FindObjectOfType<Test_Path_Manager>();
         agent = GetComponent<NavMeshAgent>();
-        //RandomizeNextTarget();
 
         Debug.Log("ENEMY Starting up!");
-        currentTargetObject = manager.GetNextTarget();
-        currentTargetPos = currentTargetObject.transform.position;
+        RandomizeNextTarget();
+        //currentTargetObject = manager.GetNextTarget();
+        //currentTargetPos = currentTargetObject.transform.position;
 
         // Set stats
         agent.speed = agentSpeed;
 
         StartCoroutine(UpdatePathfinding());
     }
-
-    //void Update()
-    //{
-    //    if (!HasArrivedToTarget())
-    //    {
-    //        Move();
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Fetching Next Target!");
-    //        RandomizeNextTarget();
-    //    }
-    //}
 
     IEnumerator UpdatePathfinding()
     {

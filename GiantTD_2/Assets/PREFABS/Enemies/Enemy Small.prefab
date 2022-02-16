@@ -10,9 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2979733115566146056}
   - component: {fileID: 1577105037}
-  - component: {fileID: 1219125119}
-  - component: {fileID: 8348895}
-  - component: {fileID: 8348896}
+  - component: {fileID: 1321643117}
   m_Layer: 0
   m_Name: Enemy Small
   m_TagString: Untagged
@@ -51,25 +49,8 @@ MonoBehaviour:
   currentTargetPos: {x: 0, y: 0, z: 0}
   updateTime: 0.1
   requiredDistance: 1
-  agentSpeed: 0.5
---- !u!114 &1219125119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3052492735736967413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 561283480310ad841a124a3de8c83a1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTargetObject: {fileID: 0}
-  currentTargetPos: {x: 0, y: 0, z: 0}
-  updateTime: 0.1
-  requiredDistance: 0.2
   agentSpeed: 1
---- !u!195 &8348895
+--- !u!195 &1321643117
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,7 +59,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3052492735736967413}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.2
   m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
@@ -91,23 +72,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8348896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3052492735736967413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 561283480310ad841a124a3de8c83a1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTargetObject: {fileID: 0}
-  currentTargetPos: {x: 0, y: 0, z: 0}
-  updateTime: 0.1
-  requiredDistance: 0.2
-  agentSpeed: 1
 --- !u!1001 &1426070862515796128
 PrefabInstance:
   m_ObjectHideFlags: 0

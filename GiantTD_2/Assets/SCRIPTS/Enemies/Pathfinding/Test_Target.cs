@@ -7,8 +7,7 @@ public class Test_Target : MonoBehaviour
     public Transform transformReference;
     private void Awake()
     {
-
-        Debug.Log("TARGET Starting up!");
+        //Debug.Log("TARGET Starting up!");
         transformReference = gameObject.transform;
     }
 

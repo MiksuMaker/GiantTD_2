@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6961754285250282899}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa26e6a27f984a94c933ced75fad2e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 2019003221352327336}
   mouseSensitivity: 3.5
   lockCursor: 1
 --- !u!114 &6961754285250282899
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca1cbb6af928fbc4aa1236976b8cbbe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 50
   maxSpeed: 1
   sprintSpeed: 20
 --- !u!1 &2019003222905540457

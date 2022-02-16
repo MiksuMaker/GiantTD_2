@@ -20,9 +20,6 @@ public class Test_Path_Manager : MonoBehaviour
         //}
 
 
-        Debug.Log("MANAGER Starting up!");
-
-
         // Find all targets
         listLength = FindObjectsOfType<Test_Target>().Length;
 
@@ -43,7 +40,7 @@ public class Test_Path_Manager : MonoBehaviour
 
     public GameObject GetNextTarget()
     {
-        Debug.Log("Getting Next Target!");
+        //Debug.Log("Getting Next Target!");
 
         // Simple version, that just gives a random member from the list
         return targetList[Random.Range(0, listLength)];

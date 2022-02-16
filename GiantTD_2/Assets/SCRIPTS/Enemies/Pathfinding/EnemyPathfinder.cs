@@ -5,9 +5,13 @@ using UnityEngine.AI;
 
 public class EnemyPathfinder : MonoBehaviour
 {
+    // References:
     Test_Path_Manager manager;
-
     NavMeshAgent agent;
+    EnemyAttacker attacker;
+
+
+
     public GameObject currentTargetObject;
     public Vector3 currentTargetPos;
     private Vector3 defaultVector = new Vector3(0, 0, 0);
@@ -23,13 +27,13 @@ public class EnemyPathfinder : MonoBehaviour
 
     void Start()
     {
+        // Set up references:
         manager = FindObjectOfType<Test_Path_Manager>();
         agent = GetComponent<NavMeshAgent>();
+        attacker = GetComponent<EnemyAttacker>();
 
-        Debug.Log("ENEMY Starting up!");
+        //Debug.Log("ENEMY Starting up!");
         RandomizeNextTarget();
-        //currentTargetObject = manager.GetNextTarget();
-        //currentTargetPos = currentTargetObject.transform.position;
 
         // Set stats
         agent.speed = agentSpeed;
@@ -37,9 +41,16 @@ public class EnemyPathfinder : MonoBehaviour
         StartCoroutine(UpdatePathfinding());
     }
 
+    private void Move()
+    {
+        agent.SetDestination(GetTargetVectorPositionWithout_Y());
+    }
+
     IEnumerator UpdatePathfinding()
     {
         Move();
+
+
 
         while (true)
         {
@@ -47,14 +58,29 @@ public class EnemyPathfinder : MonoBehaviour
             // If, Get New Target
             // + SetDestination()
             if (!IsCloseEnoughToTarget())
-            //if (HasArrivedToTarget())
             {
+                // if NOT aggroed
                 Move();
+                // if IS aggroed
+                //attacker.StartAttackingCoroutine(currentTargetObject);
             }
             else
             {
-                RandomizeNextTarget();
+                // if NOT aggroed
+                //RandomizeNextTarget();
 
+                // if IS aggroed
+                //  -> AttackTarget()
+
+
+                if (CheckAggro())
+                {
+                    attacker.StartAttackingCoroutine(currentTargetObject);
+                }
+                else
+                {
+                    RandomizeNextTarget();
+                }
             }
 
             // If not, move but do not update SetDestination()
@@ -67,47 +93,19 @@ public class EnemyPathfinder : MonoBehaviour
         }
     }
 
-    private void Move()
-    {
-        //agent.SetDestination(GetTargetVectorPos());
-        agent.SetDestination(GetTargetVectorPositionWithout_Y());
-        //if (!HasArrivedToTarget())
-        //{
-        //    agent.SetDestination(currentTargetPos);
-
-        //}
-        //else
-        //{
-        //    RandomizeNextTarget();
-        //}
-    }
-
-
+    #region Targeting
 
     public GameObject GetCurrentTarget()
     {
         return currentTargetObject;
     }
 
-    //private bool HasArrivedToTarget()
-    //{
-    //    if (GetSelfVectorPositionWithout_Y() != GetTargetVectorPositionWithout_Y())
-    //    {
-    //        return false;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Enemy has reached the target!");
-    //        return true;
-    //    }
-    //}
-
     private bool IsCloseEnoughToTarget()
     {
         float _distance = Vector3.Distance(GetTargetVectorPositionWithout_Y(), GetSelfVectorPositionWithout_Y());
         if (_distance <= requiredDistance)
         {
-            Debug.Log("Enemy has reached the target!");
+            //Debug.Log("Enemy has reached the target!");
             return true;
         }
         else
@@ -137,5 +135,28 @@ public class EnemyPathfinder : MonoBehaviour
 
         return _b;
     }
+
+    #endregion
+    
+    // Attacking
+
+    public void AggroTheEnemy(GameObject _target)
+    {
+        currentTargetObject = _target;
+
+        // Start Checking For Attack Distance
+        //
+        // -> Check If Close Enough already does this
+
+        // Toggle Aggro
+    }
+
+    private bool CheckAggro()   // Gets the Aggro state from Attacker
+    {
+        return attacker.GetAggroState();
+    }
+
+
+
 
 }

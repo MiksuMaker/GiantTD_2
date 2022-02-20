@@ -12,6 +12,8 @@ public class HealthScript : MonoBehaviour
 
     [SerializeField] int health = 20;   // Spawn Health, changed by other script
 
+    [SerializeField] private bool DEBUG_SWITCH = true;
+
     public void SetHealth(int _healthAmount)
     {
         health = _healthAmount;
@@ -20,6 +22,8 @@ public class HealthScript : MonoBehaviour
 
     public void DealDamage(int _damageAmount)
     {
+        if (DEBUG_SWITCH) Debug.Log(gameObject.name + " took " + _damageAmount + " amount of damage!");
+
         health -= _damageAmount;
 
         // Check if destroyed
@@ -32,19 +36,26 @@ public class HealthScript : MonoBehaviour
     // Die
     private void Die()
     {
-        //if (this.CompareTag("Tower"))
-        //{
-        //    GetComponent<Tower>().DoDeathAnimation();
-        //}
+        if (this.CompareTag("Tower"))
+        {
+            GetComponent<Tower>().DoDeathAnimation();
+        }
         //else if (this.CompareTag("Enemy"))
         //{
         //    GetComponent<EnemyHealth(etc.)>().DoDeathAnimation();
         //}
 
-        // Above for later implementation
+        // Destroy
+        DestroyWithDelay(0f);       // Hardcoded for the moment
 
-        // Below for testing:
-        Destroy(gameObject);
+        // HUOM! Vaihtoehtoisesti t‰m‰n voi hoitaa Death Animaation lopussa triggerin‰
+        // -> ei tarvitse s‰‰t‰‰ ajastuksen kanssa niin paljoa
+    }
 
+    public void DestroyWithDelay(float _delay_fuse) 
+    {
+        if (DEBUG_SWITCH) Debug.Log(gameObject.name + " has been DESTROYED!");
+
+        Destroy(gameObject, _delay_fuse);
     }
 }

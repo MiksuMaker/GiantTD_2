@@ -91,7 +91,7 @@ public class EnemyPathfinder : MonoBehaviour
                 //  -> AttackTarget()
 
 
-                if (CheckAggro())
+                if (CheckAggro())   // if aggored
                 {
                     attacker.StartAttackingCoroutine(currentTargetObject);
                 }
@@ -120,6 +120,12 @@ public class EnemyPathfinder : MonoBehaviour
 
     private bool IsCloseEnoughToTarget()
     {
+        // Check if Target exists
+        if (!DoesTargetExist())
+        {
+            RandomizeNextTarget();
+        }
+
         float _distance = Vector3.Distance(GetTargetVectorPositionWithout_Y(), GetSelfVectorPositionWithout_Y());
         if (_distance <= requiredDistance)
         {
@@ -129,6 +135,19 @@ public class EnemyPathfinder : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    // Checks that Target has not been destroyed
+    private bool DoesTargetExist()
+    {
+        if (!currentTargetObject)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 

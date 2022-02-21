@@ -76,24 +76,37 @@ public class EnemyAttacker : MonoBehaviour
             }
 
 
-            //// Get the Health Component
-            //if (!targetHealth)
-            //{
-            //    _target.GetComponent<HealthScript>();
-            //}
+            // Get the Health Component
+            if (!targetHealth)
+            {
+                targetHealth = _target.GetComponent<HealthScript>();
+
+                if /* Still.. */ (!targetHealth) // -> Target is not structure, but a waypoint
+                {
+                    TargetDestroyed();
+                    break;
+                }
+            }
 
 
-            // Do the attack Animation
+            //Do the attack Animation
 
-            //// Deal Damage
-            //targetHealth.DealDamage(damage);
+            // Deal Damage
+            targetHealth.DealDamage(damage);
 
 
             // above the proper function
             // Below is for testing
 
-            _target.GetComponent<HealthScript>().DealDamage(damage);    // TEST
-
+            //var health = _target.GetComponent<HealthScript>();    // TEST
+            //if (health)
+            //{
+            //    health.DealDamage(damage);
+            //}
+            //else
+            //{
+            //    TargetDestroyed();
+            //}
 
             yield return new WaitForSeconds(attackTimer);
         }

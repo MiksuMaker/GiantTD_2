@@ -35,7 +35,7 @@ public class LevelGenerator : MonoBehaviour
         TileSpawner();
         //MountainBuilder(MountainAssembler(mountainMaxSize));
         MountainSpawner(Mountains(mountainAmount));
-        TreeSpawner();
+        TreeSpawner(amountOfTrees);
     }
 
     // Update is called once per frame
@@ -72,6 +72,7 @@ public class LevelGenerator : MonoBehaviour
             }
             tileSpawnLoc.z += 1;
             tileSpawnLoc.x = 0;
+            
         }
     }
 
@@ -87,18 +88,25 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    void TreeSpawner()
+    void TreeSpawner(int treeAmount)
     {
         GameObject treeHolder = new GameObject("Trees");
-        for (int i = 0; i < amountOfTrees; i++)
+        for (int i = 0; i < treeAmount; i++)
         {
             Vector3 randomLoc = new Vector3(Random.Range(3, rows - 3), 0, (Random.Range(3, columns - 3))); //Spawn mountains within the tiles
-            if (Physics.OverlapSphere(randomLoc, 0.1f).Length > 0)
+            Vector3 sphereLoc = new Vector3(randomLoc.x, randomLoc.y + 1, randomLoc.z); //add +1 to randomLoc y so it checks above ground
+            if (Physics.OverlapSphere(sphereLoc, 0.1f).Length > 0) //If there is something on the tile we are trying to spawn, don't spawn and do another roll
             {
-                Debug.Log(Physics.OverlapSphere(randomLoc, 1f).Length);
+                Debug.Log(Physics.OverlapSphere(sphereLoc, 0.1f).Length);
+                i--;
             }
-            GameObject treeObj = Instantiate(tree, randomLoc, Quaternion.identity);
-            treeObj.transform.parent = treeHolder.transform;
+            else
+            {
+                
+                GameObject treeObj = Instantiate(tree, randomLoc, Quaternion.identity);
+                treeObj.transform.parent = treeHolder.transform;
+            }
+            
         }
     }
 

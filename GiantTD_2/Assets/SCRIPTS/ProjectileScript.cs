@@ -14,11 +14,12 @@ public class ProjectileScript : MonoBehaviour
 	public float speed = 6;
 
 	[Tooltip("How high the arc should be, in units")]
-	public float arcHeight = 0.5f;
+	public float arcHeight = 0.2f;
 
-	float Animation;
+    [SerializeField] private AnimationCurve _flightCurve;
+    private float _traveled = 0;
 
-	Vector3 startPos;
+    Vector3 startPos;
 
 	private int damage;
 
@@ -53,33 +54,55 @@ public class ProjectileScript : MonoBehaviour
 
 	void Update()
 	{
+        //// 2D ARCING (WITHOUT THE Z -AXIS)
+        //// Compute the next position, with arc added in
+        //float x0 = startPos.x;
+        //float x1 = targetPos.x;
+        //float dist = x1 - x0;
+        //float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+        //float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0) / dist);
+        //float arc = this.arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
+        //nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
+
+        //// Rotate to face the next position, and then move there
+        ////transform.rotation = LookAt(nextPos - transform.position);
+        //transform.LookAt(nextPos);
+        //transform.position = nextPos;
+        ////transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+
+        //// Do something when we reach the target
+        //if (nextPos == targetPos) Arrived();
+        ////if (nextPos == new Vector3(targetPos.x, 0, targetPos.z)) Arrived();
+
+
+        //Vector3 x0 = startPos;
+        //Vector3 x1 = targetPos;
+        //Vector3 dist = x1 - x0;
+        //      float nextX = Mathf.MoveTowards(transform.position.x, targetPos.x, speed * Time.deltaTime);
+        //      float nextZ = Mathf.MoveTowards(transform.position.z, targetPos.z, speed * Time.deltaTime);
+
+        //float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0))
 
 
 
-		//// Compute the next position with an arc
-		//      float x0 = startPos.x;
-		//      float x1 = targetPos.x;
-		//      float z0 = startPos.z;
-		//      float z1 = targetPos.z;
+
+        //// Compute the next position, with arc added in
+        //float x0 = startPos.x;
+        //float x1 = targetPos.x;
+        //float dist = x1 - x0;
+        //float nextX = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+        //float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0) / dist);
+        //float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
+        //nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
 
 
-		//float common0 = Mathf.Sqrt((x0 * x0)+(z0 * z0));
-		//float common1 = Mathf.Sqrt((x1 * x1)+(z1 * z1));
-		////float dist = Vector3.Distance(startPos, targetPos);
-		//float distX = x1 - x0;
-		//float distZ = z1 - z0;
-		//float distC = Mathf.Sqrt((distX * distX) + (distZ * distZ));
+        //// Rotate to face the next position, and then move there
+        //transform.rotation = LookAt2D(nextPos - transform.position);
+        //transform.position = nextPos;
 
-		//float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
-		//float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);
+        //// Do something when we reach the target
+        //if (nextPos == targetPos) Arrived();
 
-		//float nextCommonPos = Mathf.Sqrt((next_X_Pos * next_X_Pos) + (next_Z_Pos * next_Z_Pos));
-
-
-		//float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextCommonPos - common0) / distC);
-		//float arc = arcHeight * (nextCommonPos - common0) * (nextCommonPos - common1) / (-0.25f * distC * distC);
-
-		//nextPos = new Vector3(next_X_Pos, baseY + arc, next_Z_Pos);
 
 
 
@@ -87,10 +110,49 @@ public class ProjectileScript : MonoBehaviour
 		// Compute the next position -- straight flight
 		Vector3 nextPos = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
 
+        // Compute the next position with an arc
+        float x0 = startPos.x;
+        float x1 = targetPos.x;
+        float z0 = startPos.z;
+        float z1 = targetPos.z;
+
+        float common0 = Mathf.Sqrt((x0 * x0) + (z0 * z0));
+        float common1 = Mathf.Sqrt((x1 * x1) + (z1 * z1));
+        //float dist = Vector3.Distance(startPos, targetPos);
+        float distX = x1 - x0;
+        float distZ = z1 - z0;
+        float distC = Mathf.Sqrt((distX * distX) + (distZ * distZ));
+        float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+        float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);
+        float nextCommonPos = Mathf.Sqrt((next_X_Pos * next_X_Pos) + (next_Z_Pos * next_Z_Pos));
+        float differenceBetweenNextAndStart = Vector3.Distance(new Vector3(next_X_Pos, targetPos.y, next_Z_Pos),
+                                                                startPos);
 
 
-		// Rotate to face the next position, and then move there
-		transform.position = nextPos;
+        float baseY = Mathf.Lerp(startPos.y, targetPos.y, (/*(nextPos - startPos) /*/ differenceBetweenNextAndStart)
+                                                                                                            / distC);
+        float arc = arcHeight * (nextCommonPos - common0) * (nextCommonPos - common1) / (-0.25f * distC * distC);
+
+        nextPos = new Vector3(next_X_Pos, baseY + arc, next_Z_Pos);
+
+
+
+        //// DIFFERENT SOURCE; ANIMATION CURVE
+        //_traveled += Time.deltaTime * speed;
+        //float arcHeight = _flightCurve.Evaluate(_traveled);
+        //Vector3 originWithHeight = new Vector3(startPos.x, startPos.y + arcHeight, startPos.z);
+        //Vector3 targetWithHeight = new Vector3(targetPos.x, targetPos.y + arcHeight, startPos.z);
+        //transform.position = Vector3.Lerp(originWithHeight, targetWithHeight, _traveled);
+
+
+
+
+
+
+
+
+        // Rotate to face the next position, and then move there
+        transform.position = nextPos;
         transform.LookAt(targetPos);
 
         // Do something when we reach the target
@@ -99,24 +161,9 @@ public class ProjectileScript : MonoBehaviour
 
 
 
+    }
 
-		//// My go at creating a fiiiine curve
-
-		//// Have the arrow lerp up unitl the halfway point, then start heading to target y pos
-
-		//Vector3 StartPos_WithoutY = new Vector3(startPos.x, 0, startPos.z);
-		//Vector3 TargetPos_WithoutY = new Vector3(targetPos.x, 0, targetPos.z);
-
-		//Vector3 Halfway = StartPos_WithoutY - TargetPos_WithoutY;
-		//Vector3 HeightStartPos = new Vector3(0, startPos.y, 0);
-		//Vector3 HeightMaxPos = new Vector3(0, startPos.y + arcHeight, 0);
-		//Vector3 HeightTargetPos = new Vector3(0, startPos.y, 0);
-
-		//// Calculate the next position
-
-	}
-
-	void Arrived()
+    void Arrived()
 	{
 		// Deal damage to the target
 		if (targetObject) // ..exists

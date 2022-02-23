@@ -16,8 +16,8 @@ public class ProjectileScript : MonoBehaviour
 	[Tooltip("How high the arc should be, in units")]
 	public float arcHeight = 0.2f;
 
-    [SerializeField] private AnimationCurve _flightCurve;
-    private float _traveled = 0;
+    //[SerializeField] private AnimationCurve _flightCurve;
+    //private float _traveled = 0;
 
     Vector3 startPos;
 
@@ -104,6 +104,16 @@ public class ProjectileScript : MonoBehaviour
         //if (nextPos == targetPos) Arrived();
 
 
+        //// DIFFERENT SOURCE; ANIMATION CURVE
+        //_traveled += Time.deltaTime * speed;
+        //float arcHeight = _flightCurve.Evaluate(_traveled);
+        //Vector3 originWithHeight = new Vector3(startPos.x, startPos.y + arcHeight, startPos.z);
+        //Vector3 targetWithHeight = new Vector3(targetPos.x, targetPos.y + arcHeight, startPos.z);
+        //transform.position = Vector3.Lerp(originWithHeight, targetWithHeight, _traveled);
+
+
+
+
 
 
 
@@ -122,38 +132,63 @@ public class ProjectileScript : MonoBehaviour
         float distX = x1 - x0;
         float distZ = z1 - z0;
         float distC = Mathf.Sqrt((distX * distX) + (distZ * distZ));
-        float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
-        float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);
+
+        // Speeds
+        float Xspeed = speed * Mathf.Abs(distX / distZ);
+        float Zspeed = speed * Mathf.Abs(distZ / distX);
+        //float Xspeed = Mathf.Abs(distX / distZ);
+        //float Zspeed = Mathf.Abs(distZ / distX);
+        //Debug.Log("X speed is: " + Xspeed);
+        //Debug.Log("Z speed is: " + Zspeed);
+
+        // Position modifiers
+        //float Xmod = (distX / distZ);
+        //float Zmod = (distZ / distX);
+
+
+        //float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);               // <----- NORMAALI
+        //float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);
+        //float nextCommonPos = Mathf.Sqrt((next_X_Pos * next_X_Pos) + (next_Z_Pos * next_Z_Pos));
+
+        float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, Xspeed * Time.deltaTime);              // <----- TOIMII
+        float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);                       //... tosin nuolen nopeus vaihtelee
         float nextCommonPos = Mathf.Sqrt((next_X_Pos * next_X_Pos) + (next_Z_Pos * next_Z_Pos));
+
+        //float next_X_Pos = Mathf.MoveTowards(transform.position.x, x1, speed * Time.deltaTime);
+        //float next_Z_Pos = Mathf.MoveTowards(transform.position.z, z1, speed * Time.deltaTime);
+        //float nextCommonPos = Mathf.Sqrt((next_X_Pos * next_X_Pos) + (next_Z_Pos * next_Z_Pos));
+
+        // DEBUGGERS
+        //Debug.Log("Next X Pos: " + next_X_Pos);
+
+
         float differenceBetweenNextAndStart = Vector3.Distance(new Vector3(next_X_Pos, targetPos.y, next_Z_Pos),
                                                                 startPos);
 
-
         float baseY = Mathf.Lerp(startPos.y, targetPos.y, (/*(nextPos - startPos) /*/ differenceBetweenNextAndStart)
                                                                                                             / distC);
+
         float arc = arcHeight * (nextCommonPos - common0) * (nextCommonPos - common1) / (-0.25f * distC * distC);
+
+
+        // Calculate the distance between start x and target x
+        Debug.Log("X Answer is: " + Mathf.Abs(distX / distZ));
+        Debug.Log("Z Answer is: " + Mathf.Abs(distZ / distX));
+        //Debug.Log("X Position is: " + next_X_Pos * Mathf.Abs(distX / distZ));
+        //Debug.Log("Z Position is: " + next_Z_Pos * Mathf.Abs(distZ / distX));
+        //Debug.Log("X Position is: " + next_X_Pos);
+        //Debug.Log("Z Position is: " + next_Z_Pos);
+        //Debug.Log("X Relative Speed is: " + Mathf.Abs(distX / distZ) * speed);
+        //Debug.Log("Z Relative Speed is: " + Mathf.Abs(distZ / distX) * speed);
+
 
         nextPos = new Vector3(next_X_Pos, baseY + arc, next_Z_Pos);
 
 
 
-        //// DIFFERENT SOURCE; ANIMATION CURVE
-        //_traveled += Time.deltaTime * speed;
-        //float arcHeight = _flightCurve.Evaluate(_traveled);
-        //Vector3 originWithHeight = new Vector3(startPos.x, startPos.y + arcHeight, startPos.z);
-        //Vector3 targetWithHeight = new Vector3(targetPos.x, targetPos.y + arcHeight, startPos.z);
-        //transform.position = Vector3.Lerp(originWithHeight, targetWithHeight, _traveled);
-
-
-
-
-
-
-
-
         // Rotate to face the next position, and then move there
+        transform.LookAt(nextPos);
         transform.position = nextPos;
-        transform.LookAt(targetPos);
 
         // Do something when we reach the target
         if (nextPos == targetPos) Arrived();

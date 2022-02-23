@@ -87,7 +87,7 @@ MonoBehaviour:
   currentTargetPos: {x: 0, y: 0, z: 0}
   updateTime: 0.1
   requiredDistance: 1
-  agentSpeed: 1
+  agentSpeed: 0.3
 --- !u!114 &8080416201011969688
 MonoBehaviour:
   m_ObjectHideFlags: 0

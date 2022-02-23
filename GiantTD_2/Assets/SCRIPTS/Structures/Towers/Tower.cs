@@ -206,7 +206,6 @@ public class Tower : MonoBehaviour
         while (permissionToAttack)
         {
 
-            yield return new WaitForSeconds(firingCycleTimer);
 
             if (!currentLockedOnEnemy) break;
 
@@ -218,9 +217,10 @@ public class Tower : MonoBehaviour
             // Pass target information to the projectile
             //
             // _projectile.GetComponent<ProjectileScript>().SetTarget();
-            _projectile.GetComponent<ProjectileScript>().SetUpProjectile(currentLockedOnEnemy,
+            _projectile.GetComponent<ProjectileScript_2>().SetUpProjectile(currentLockedOnEnemy,            // ProjectileScript OR PROJECTILESCRIPT_2
                                                                         attackPoint.transform.position,
                                                                         damageOutput);
+            yield return new WaitForSeconds(firingCycleTimer);
         }
     }
 

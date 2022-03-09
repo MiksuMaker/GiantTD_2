@@ -169,13 +169,14 @@ MonoBehaviour:
   grassTile: {fileID: 1748205807390674833, guid: 56b8dc42b83c49148a6d8ad72c7c8e2f, type: 3}
   mountain: {fileID: 4358687017288487518, guid: 6f33545f8eca4cf4d88f8a6abf2d0c01, type: 3}
   tree: {fileID: 8445871848582962524, guid: 94d44d01cb87344439fe2638c0ef8643, type: 3}
+  town: {fileID: 9114496020609833646, guid: a4357fa97e1d87048a787b72741ad225, type: 3}
   tileParent: {fileID: 291182303}
-  amountOfTrees: 60
-  rows: 50
-  columns: 50
+  amountOfTrees: 100
+  rows: 30
+  columns: 30
   tiles: []
-  mountainMaxSize: 7
-  mountainAmount: 15
+  mountainMaxSize: 30
+  mountainAmount: 0
 --- !u!1 &222587406
 GameObject:
   m_ObjectHideFlags: 0

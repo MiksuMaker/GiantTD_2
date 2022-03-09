@@ -6,9 +6,23 @@ public class LevelGenerator : MonoBehaviour
 {
     //Tiles
     [SerializeField]
-    private GameObject grassTile, mountain, tree;
+    private GameObject grassTile, mountain, tree, town;
     public GameObject tileParent;
+    public List<List<GameObject>> tileList = new List<List<GameObject>>();
+    
+    public class WorldTile
+    {
+        public Mesh tileMesh;
+        public bool hasObstacle;
+        public Vector3 location;
 
+        WorldTile(Mesh _mesh, bool _hasObstacle, Vector3 _location)
+        {
+            tileMesh = _mesh;
+            hasObstacle = _hasObstacle;
+            location = _location;
+        }
+    }
 
     //Tree stuff
     public int amountOfTrees = 30;
@@ -17,9 +31,13 @@ public class LevelGenerator : MonoBehaviour
     public int rows = 20;
     public int columns = 20;
 
+    //Town variables
+    public int buildingsAmount = 5;
+    public int buildingLocationSize = 3;
+
     [SerializeField]
-    private List<GameObject> tiles;
-    private List<List<GameObject>> coordinates;
+    //private List<GameObject> tiles;
+    //private List<List<GameObject>> coordinates;
 
 
     //Mountain max size and amount
@@ -36,6 +54,7 @@ public class LevelGenerator : MonoBehaviour
         //MountainBuilder(MountainAssembler(mountainMaxSize));
         MountainSpawner(Mountains(mountainAmount));
         TreeSpawner(amountOfTrees);
+        TownSpawner();
     }
 
     // Update is called once per frame
@@ -51,6 +70,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int y = 0; y < columns; y++)
         {
+          
             for (int x = 0; x < rows; x++)
             {
 
@@ -64,7 +84,7 @@ public class LevelGenerator : MonoBehaviour
                 GameObject spawnedTile = Instantiate(toInstantiate, tileSpawnLoc, toInstantiate.transform.rotation);
                 spawnedTile.transform.parent = tileParent.transform;
                 //spawnedTile.GetComponent<BaseTile>().setLocation(transform.position);
-                tiles.Add(spawnedTile);
+                
 
 
                 //Debug.Log(spawnedTile.transform.position);
@@ -74,6 +94,24 @@ public class LevelGenerator : MonoBehaviour
             tileSpawnLoc.x = 0;
             
         }
+    }
+
+    void TownSpawner()
+    {
+        int townX = rows / 2;
+        int townZ = columns / 2;
+
+        int townXmin = townX - buildingLocationSize;
+        int townXmax = townX + buildingLocationSize;
+        int townZmin = townZ - buildingLocationSize;
+        int townZmax = townZ + buildingLocationSize;
+
+        for(int i = 0; i < buildingsAmount; i++)
+        {
+            //Vector3 randomSpawnLoc tähän randomaa min-max välilt x ja z
+        }
+        Vector3 spawnLoc = new Vector3(townX, 0, townZ);
+        Instantiate(town, spawnLoc, Quaternion.identity);
     }
 
     void MountainSpawner(List <GameObject> mountainsToSpawn)
@@ -90,14 +128,15 @@ public class LevelGenerator : MonoBehaviour
 
     void TreeSpawner(int treeAmount)
     {
+        int treesSpawned = 0;
         GameObject treeHolder = new GameObject("Trees");
         for (int i = 0; i < treeAmount; i++)
         {
-            Vector3 randomLoc = new Vector3(Random.Range(3, rows - 3), 0, (Random.Range(3, columns - 3))); //Spawn mountains within the tiles
-            Vector3 sphereLoc = new Vector3(randomLoc.x, randomLoc.y + 1, randomLoc.z); //add +1 to randomLoc y so it checks above ground
+            Vector3 randomLoc = new Vector3(Random.Range(1, rows - 1), 0, (Random.Range(1, columns - 1))); //Spawn mountains within the tiles
+            Vector3 sphereLoc = new Vector3(randomLoc.x, randomLoc.y + 0.5f, randomLoc.z); //add +1 to randomLoc y so it checks above ground
             if (Physics.OverlapSphere(sphereLoc, 0.1f).Length > 0) //If there is something on the tile we are trying to spawn, don't spawn and do another roll
             {
-                Debug.Log(Physics.OverlapSphere(sphereLoc, 0.1f).Length);
+                //Debug.Log(Physics.OverlapSphere(sphereLoc, 0.1f).Length);
                 i--;
             }
             else
@@ -105,9 +144,11 @@ public class LevelGenerator : MonoBehaviour
                 
                 GameObject treeObj = Instantiate(tree, randomLoc, Quaternion.identity);
                 treeObj.transform.parent = treeHolder.transform;
+                treesSpawned++;
             }
             
         }
+        Debug.Log(treesSpawned);
     }
 
     GameObject MountainBuilder(List<Vector3> coords) //Build mountains that are placed on the level
@@ -144,7 +185,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 currentLoc.z += Random.Range(0, 2) * 2 - 1;
             }
-
+            
             if (coordinates.Contains(currentLoc)) //Check if list already has the coordinates, if it does, don't add and roll again
             {
                 currentLoc = previousLoc; //If the position was already in the list, set current location to the previous so we can roll again

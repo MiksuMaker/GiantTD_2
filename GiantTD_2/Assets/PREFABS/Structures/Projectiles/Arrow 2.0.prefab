@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8613cf72ca6e66348b3785b4ab4cbb82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1018084930972880075}
   targetPos: {x: 0, y: 0, z: 0}
   speed: 2
   arcHeight: 0.2

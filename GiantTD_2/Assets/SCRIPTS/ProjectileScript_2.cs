@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 public class ProjectileScript_2 : MonoBehaviour
 {
+    //Animator animator;
+    [SerializeField] Animator animator;
+
     [Tooltip("Position we want to hit")]
     public Vector3 targetPos;
     private GameObject targetObject;
@@ -23,6 +26,7 @@ public class ProjectileScript_2 : MonoBehaviour
 
     void Start()
     {
+        //animator = GetComponent<Animator>();
         // Cache our start position, which is really the only thing we need
         // (in addition to our current position, and the target).
         startPos = transform.position;
@@ -37,6 +41,11 @@ public class ProjectileScript_2 : MonoBehaviour
 
         // Set target
         targetObject = _target;
+
+
+        // Set animation speed
+        SetAnimationSpeed(CalculateDistance());
+
 
         damage = _damage;
     }
@@ -55,6 +64,27 @@ public class ProjectileScript_2 : MonoBehaviour
         if (nextPos == targetPos) Arrived();
 
     }
+
+    float CalculateDistance()
+    {
+        float dist = Vector3.Distance(targetPos, transform.position);
+        return dist;
+    }
+
+    void SetAnimationSpeed(float _dist)
+    {
+        if (_dist >= 1)
+        {
+            animator.speed = 1.5f / _dist;
+        }
+        else
+        {
+            animator.speed = (1 * _dist);
+        }
+
+        //animator.speed = _speed;
+    }
+
 
     void Arrived()
     {

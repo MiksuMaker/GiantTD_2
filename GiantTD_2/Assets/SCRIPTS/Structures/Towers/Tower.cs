@@ -28,7 +28,7 @@ public class Tower : MonoBehaviour
     LayerMask targetMask;
 
     // Animator
-
+    [SerializeField] Animator animator;
 
     void Start()
     {
@@ -44,6 +44,9 @@ public class Tower : MonoBehaviour
         targetMask = LayerMask.GetMask("Enemy");
 
         // Set the AttackPoint
+
+        // Set animator
+        animator = GetComponent<Animator>();
     }
 
     //private void ListAllEnemies()
@@ -232,6 +235,10 @@ public class Tower : MonoBehaviour
 
     public void TakeDamage(int _damageAmount)
     {
+        // Do Damage Animation
+        Debug.Log(gameObject.name + " damaged!");
+        animator.SetTrigger("TowerDamage");
+
         healthScript.DealDamage(_damageAmount);
     }
 
@@ -240,6 +247,7 @@ public class Tower : MonoBehaviour
     {
         // Do the death animation
         Debug.Log("Tower has been destroyed!");
+        animator.SetBool("TowerDead", true);
 
         // Deploy related particle effects
     }

@@ -46,7 +46,7 @@ public class HealthScript : MonoBehaviour
         //}
 
         // Destroy
-        DestroyWithDelay(0f);       // Hardcoded for the moment
+        DestroyWithDelay(3f);       // Hardcoded for the moment
 
         // HUOM! Vaihtoehtoisesti t‰m‰n voi hoitaa Death Animaation lopussa triggerin‰
         // -> ei tarvitse s‰‰t‰‰ ajastuksen kanssa niin paljoa
@@ -54,6 +54,8 @@ public class HealthScript : MonoBehaviour
 
     public void DestroyWithDelay(float _delay_fuse) 
     {
+        //Destroy(GetComponent<Tower>());
+
         if (DEBUG_SWITCH) Debug.Log(gameObject.name + " has been DESTROYED!");
 
         Destroy(gameObject, _delay_fuse);

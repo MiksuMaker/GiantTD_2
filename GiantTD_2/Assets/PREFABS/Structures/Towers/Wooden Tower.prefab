@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 6096917068528280333}
   - component: {fileID: 6096917068528280323}
   - component: {fileID: 6096917068528280332}
+  - component: {fileID: 1215226797}
   m_Layer: 0
   m_Name: Wooden Tower
   m_TagString: Tower
@@ -76,13 +77,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ee90fe903c27574db0747e6baf6c96d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 5
   damageOutput: 1
   projectile: {fileID: 1018084930972880068, guid: 5e8cef56905cf95498fea7ce6a1f5d34, type: 3}
   attackPoint: {fileID: 6096917068181370629}
   detectionRange: 10
   firingCycleTimer: 0.3
   currentLockedOnEnemy: {fileID: 0}
+  animator: {fileID: 1215226797}
 --- !u!114 &6096917068528280332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +99,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   DEBUG_SWITCH: 0
+--- !u!95 &1215226797
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096917068528280334}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4197c724736611848b1b545d106b4ec5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &6096917067791983516
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,25 +4,17 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+
+    
     //Tiles
     [SerializeField]
     private GameObject grassTile, mountain, tree, town;
     public GameObject tileParent;
     public List<List<GameObject>> tileList = new List<List<GameObject>>();
-    
-    public class WorldTile
-    {
-        public Mesh tileMesh;
-        public bool hasObstacle;
-        public Vector3 location;
 
-        WorldTile(Mesh _mesh, bool _hasObstacle, Vector3 _location)
-        {
-            tileMesh = _mesh;
-            hasObstacle = _hasObstacle;
-            location = _location;
-        }
-    }
+   
+    
+    
 
     //Tree stuff
     public int amountOfTrees = 30;
@@ -51,7 +43,6 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         TileSpawner();
-        //MountainBuilder(MountainAssembler(mountainMaxSize));
         MountainSpawner(Mountains(mountainAmount));
         TreeSpawner(amountOfTrees);
         TownSpawner();
@@ -73,8 +64,9 @@ public class LevelGenerator : MonoBehaviour
           
             for (int x = 0; x < rows; x++)
             {
-
+                //WorldTile tile = new WorldTile(grassTile, false, tileSpawnLoc); // Trying to spawn the tile as a custom class with a gameObject variable, not working since it's not appearing anywhere
                 GameObject toInstantiate = grassTile;
+                //Debug.Log(tile.tileMesh.transform.position);
                 //Debug.Log(x);
                 if (x == 0 || x == columns - 1 || y == 0 || y == rows - 1) //Block the edges with mountains
                 {

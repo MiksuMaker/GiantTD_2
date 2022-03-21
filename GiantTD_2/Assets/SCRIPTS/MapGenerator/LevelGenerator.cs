@@ -11,11 +11,8 @@ public class LevelGenerator : MonoBehaviour
     private GameObject grassTile, mountain, tree, town;
     public GameObject tileParent;
     public List<List<GameObject>> tileList = new List<List<GameObject>>();
-
+    
    
-    
-    
-
     //Tree stuff
     public int amountOfTrees = 30;
 
@@ -242,6 +239,5 @@ public class LevelGenerator : MonoBehaviour
 
         return mountains;
     }
-
 
 }

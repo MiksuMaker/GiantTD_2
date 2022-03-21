@@ -176,8 +176,8 @@ MonoBehaviour:
   columns: 30
   buildingsAmount: 5
   buildingLocationSize: 3
-  mountainMaxSize: 30
-  mountainAmount: 0
+  mountainMaxSize: 5
+  mountainAmount: 10
 --- !u!1 &222587406
 GameObject:
   m_ObjectHideFlags: 0

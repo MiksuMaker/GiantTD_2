@@ -174,7 +174,8 @@ MonoBehaviour:
   amountOfTrees: 100
   rows: 30
   columns: 30
-  tiles: []
+  buildingsAmount: 5
+  buildingLocationSize: 3
   mountainMaxSize: 30
   mountainAmount: 0
 --- !u!1 &222587406

@@ -90,20 +90,54 @@ public class LevelGenerator : MonoBehaviour
 
     void TownSpawner()
     {
+        //Get the middle of the map
         int townX = rows / 2;
         int townZ = columns / 2;
 
+        //Get a square area in the middle in which to spawn the buildings
         int townXmin = townX - buildingLocationSize;
         int townXmax = townX + buildingLocationSize;
         int townZmin = townZ - buildingLocationSize;
         int townZmax = townZ + buildingLocationSize;
 
-        for(int i = 0; i < buildingsAmount; i++)
+        List<Vector3> coords = new List<Vector3>();
+
+        for (int i = 0; i < buildingsAmount; i++)
         {
             //Vector3 randomSpawnLoc tähän randomaa min-max välilt x ja z
+            Vector3 randomSpawnLoc = new Vector3(0, 0, 0);
+            randomSpawnLoc.x = Random.Range(townXmin, townXmax);
+            randomSpawnLoc.z = Random.Range(townZmin, townZmax);
+
+            if(coords.Contains(randomSpawnLoc))
+            {
+                i--;
+            }
+            else
+            {
+                coords.Add(randomSpawnLoc);
+            }
+
+
         }
-        Vector3 spawnLoc = new Vector3(townX, 0, townZ);
-        Instantiate(town, spawnLoc, Quaternion.identity);
+        //Vector3 spawnLoc = new Vector3(townX, 0, townZ);
+        //Instantiate(town, spawnLoc, Quaternion.identity);
+
+        for(int i = 0; i < coords.Count; i++)
+        {
+           //Destroy trees under town buildings 
+            //if (Physics.OverlapSphere(coords[i], 0.1f).Length > 0) //If there is something on the tile we are trying to spawn, don't spawn and do another roll
+            //{
+            //    Collider[] foundObjects = Physics.OverlapSphere(coords[i], 0.1f);
+            //    foreach (Collider foundObj in foundObjects)
+            //    {
+            //        Destroy(foundObjects[i].gameObject);
+            //        Debug.Log("Destroyed object found under town");
+            //    }
+            //}
+
+            Instantiate(town, coords[i], Quaternion.identity);
+        }
     }
 
     void MountainSpawner(List <GameObject> mountainsToSpawn)

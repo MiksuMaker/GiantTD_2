@@ -121,5 +121,4 @@ public class EnemyAttacker : MonoBehaviour
         currentlyAttacking = false;
     }
 
-
 }

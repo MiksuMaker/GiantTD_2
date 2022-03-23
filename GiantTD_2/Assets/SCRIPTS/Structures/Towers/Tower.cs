@@ -135,8 +135,9 @@ public class Tower : MonoBehaviour
             }
 
             yield return new WaitForSeconds(detectionTimer);
-            AttemptProvokingEnemies();
 
+
+            AttemptProvokingEnemies();
             AttackIfEngaged();
         }
 
@@ -155,8 +156,6 @@ public class Tower : MonoBehaviour
         }
         //Debug.Log("Detected " + detectedEnemies.Count + " Enemies!");
     }
-
-
 
 
     // Attack Script
@@ -248,8 +247,11 @@ public class Tower : MonoBehaviour
     }
 
     // Die
-    public void DoDeathAnimation() // Called from HealthScript
+    public void DoDeath() // Called from HealthScript
     {
+        // Stop Firing
+        permissionToAttack = false;
+
         // Do the death animation
         Debug.Log("Tower has been destroyed!");
         animator.SetBool("TowerDead", true);

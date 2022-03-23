@@ -193,7 +193,14 @@ public class EnemyPathfinder : MonoBehaviour
         return attacker.GetAggroState();
     }
 
-
+    public void CheckIfCurrentTargetDestroyed(GameObject _target)
+    {
+        if (_target == currentTargetObject)
+        {
+            // Deaggro from that object instantly
+            RandomizeNextTarget();
+        }
+    }
 
 
 }

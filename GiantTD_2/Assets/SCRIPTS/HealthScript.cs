@@ -38,7 +38,7 @@ public class HealthScript : MonoBehaviour
     {
         if (this.CompareTag("Tower"))
         {
-            GetComponent<Tower>().DoDeathAnimation();
+            GetComponent<Tower>().DoDeath();
         }
         //else if (this.CompareTag("Enemy"))
         //{

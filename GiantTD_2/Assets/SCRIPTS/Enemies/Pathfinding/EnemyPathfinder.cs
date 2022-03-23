@@ -66,8 +66,8 @@ public class EnemyPathfinder : MonoBehaviour
 
     IEnumerator UpdatePathfinding()
     {
-        Move();
 
+        Move();
 
 
         while (true)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     private GameObject grassTile, mountain, tree, town;
     public GameObject tileParent;
+    public GameObject[] jee;
     public List<List<GameObject>> tileList = new List<List<GameObject>>();
     
    
     //Tree stuff
     public int amountOfTrees = 30;
+    Dictionary<Vector2, GameObject> jees = new Dictionary<Vector2, GameObject>();
 
     //Map length and width
     public int rows = 20;
@@ -33,16 +36,27 @@ public class LevelGenerator : MonoBehaviour
     public int mountainMaxSize = 5;
     public int mountainAmount = 5;
 
+    public class GOArray
+    {
+        [SerializeField]
+        private GameObject[] _gameObjects;
+    }
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+
+        //jees = jee.ToDictionary<Vector2, GameObject>(jee);
+        //tileList = jees.ToDictionary<>();
+
+        tileList = new List<List<GameObject>>();
         TileSpawner();
         MountainSpawner(Mountains(mountainAmount));
         TreeSpawner(amountOfTrees);
         TownSpawner();
+
     }
 
     // Update is called once per frame
@@ -58,7 +72,9 @@ public class LevelGenerator : MonoBehaviour
 
         for (int y = 0; y < columns; y++)
         {
-          
+
+            List<GameObject> tempList = new List<GameObject>();
+
             for (int x = 0; x < rows; x++)
             {
                 //WorldTile tile = new WorldTile(grassTile, false, tileSpawnLoc); // Trying to spawn the tile as a custom class with a gameObject variable, not working since it's not appearing anywhere
@@ -72,6 +88,8 @@ public class LevelGenerator : MonoBehaviour
                 }
                 GameObject spawnedTile = Instantiate(toInstantiate, tileSpawnLoc, toInstantiate.transform.rotation);
                 spawnedTile.transform.parent = tileParent.transform;
+
+                tempList.Add(spawnedTile);
                 //spawnedTile.GetComponent<BaseTile>().setLocation(transform.position);
                 
 
@@ -81,7 +99,7 @@ public class LevelGenerator : MonoBehaviour
             }
             tileSpawnLoc.z += 1;
             tileSpawnLoc.x = 0;
-            
+            tileList.Add(tempList);
         }
     }
 

@@ -26,10 +26,10 @@ public class Foot : MonoBehaviour
         //    Debug.Log("Stepped on an enemy");
         //    Destroy(other.gameObject);
         //}
+            Debug.Log("You got stepped on " + other.name);
 
         if(other.GetComponent<HealthScript>())
         {
-            Debug.Log("You got stepped on");
             other.GetComponent<HealthScript>().DealDamage(stompDamage);
         }
     }

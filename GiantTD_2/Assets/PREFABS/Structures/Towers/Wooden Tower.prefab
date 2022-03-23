@@ -79,12 +79,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   damageOutput: 1
+  detectionRange: 3
+  firingCycleTimer: 1
   projectile: {fileID: 1018084930972880068, guid: 5e8cef56905cf95498fea7ce6a1f5d34, type: 3}
   attackPoint: {fileID: 6096917068181370629}
-  detectionRange: 10
-  firingCycleTimer: 0.3
   currentLockedOnEnemy: {fileID: 0}
-  animator: {fileID: 1215226797}
+  debuggingON: 1
 --- !u!114 &6096917068528280332
 MonoBehaviour:
   m_ObjectHideFlags: 0

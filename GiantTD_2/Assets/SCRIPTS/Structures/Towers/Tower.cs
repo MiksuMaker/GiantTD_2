@@ -6,16 +6,18 @@ public class Tower : MonoBehaviour
 {
     //Universal Stats:
     [SerializeField] int health = 100;
-    [SerializeField] int damageOutput = 1;
 
     //Attack Stats:
+    [Header("Damage Output")]
+    [SerializeField] int damageOutput = 1;
+    [SerializeField] float detectionRange = 2f;
+    [SerializeField] float firingCycleTimer = 2f;
+    [Header("Projectile")]
     [SerializeField] GameObject projectile;
     [SerializeField] GameObject attackPoint;
-    [SerializeField] float detectionRange = 2f;
     float detectionTimer = 0.2f;
     bool permissionToAttack = false;
     bool firing = false;
-    [SerializeField] float firingCycleTimer = 2f;
 
     // Targeting and Detection:
     //private GameObject[] allEnemies;
@@ -28,7 +30,10 @@ public class Tower : MonoBehaviour
     LayerMask targetMask;
 
     // Animator
-    [SerializeField] Animator animator;
+    Animator animator;
+
+    [Header("Debug")]
+    [SerializeField] bool debuggingON = true;
 
     void Start()
     {
@@ -250,5 +255,16 @@ public class Tower : MonoBehaviour
         animator.SetBool("TowerDead", true);
 
         // Deploy related particle effects
+    }
+
+
+    // DEBUGGING
+    public virtual void OnDrawGizmos()
+    {
+        if (debuggingON)
+        {
+            Gizmos.DrawWireSphere(transform.position, detectionRange);
+            Gizmos.color = Color.red;
+        }
     }
 }
